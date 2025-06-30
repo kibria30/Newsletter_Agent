@@ -8,6 +8,7 @@ A simple, lightweight AI-powered newsletter generation system using **LangGraph*
 - 🚀 **FastAPI** - High-performance web framework with async support
 - 🤖 **Google Gemini** - AI model for content generation and summarization
 - 🔍 **Tavily API** - Real-time content research and web scraping
+- 🧠 **FAISS** - Vector similarity search for content deduplication and ranking
 - 🍲 **BeautifulSoup** - HTML parsing and content formation
 - 📧 **SMTP** - Email delivery system
 - 💾 **SQLite** - Lightweight database for user management
@@ -31,7 +32,7 @@ The newsletter generation follows a structured **LangGraph** workflow with the f
 
 1. **🔍 Generate Search Queries** - Creates optimized search queries based on user interests
 2. **📰 Collect Content** - Gathers articles using Tavily API and web scraping
-3. **⚙️ Process Content** - Filters, deduplicates, and ranks articles using vector similarity
+3. **⚙️ Process Content** - Filters, deduplicates, and ranks articles using FAISS vector similarity
 4. **✍️ Compose Newsletter** - Uses Gemini AI to create personalized newsletter content
 5. **📨 Send Email** - Delivers the final newsletter via SMTP
 

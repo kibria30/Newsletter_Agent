@@ -1,6 +1,6 @@
-# Newsletter AI Agent - Lightweight Version
+# Newsletter AI Agent
 
-A simple, lightweight AI-powered newsletter generation system using **LangGraph** for workflow orchestration, **FastAPI** for the web framework, and **Google Gemini** for AI content generation.
+A simple, lightweight AI-powered newsletter generation system using **LangGraph** for workflow orchestration, **FastAPI** for the web framework, **Google Gemini** for AI content generation, and **Tavily API** for intelligent research and content discovery.
 
 ## Key Technologies
 

@@ -6,6 +6,7 @@ The Newsletter AI Agent is a lightweight FastAPI application that uses **FastAPI
 
 ## Quick Start
 
+### Option 1: Local Development
 ```bash
 # Install dependencies
 ./env/bin/pip install -r requirements.txt
@@ -15,6 +16,21 @@ The Newsletter AI Agent is a lightweight FastAPI application that uses **FastAPI
 
 # Trigger newsletters via API
 curl -X POST http://localhost:8000/send-newsletters
+```
+
+### Option 2: Docker
+```bash
+# Build and run with Docker Compose
+docker-compose up --build
+
+# Or run in background
+docker-compose up -d --build
+
+# Check logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
 ```
 
 ## API Endpoints

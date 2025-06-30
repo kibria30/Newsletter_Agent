@@ -196,7 +196,10 @@ test_data/
 
 # Docker
 docker-compose.override.yml
-.dockerignore
+
+# Keep these Docker files
+!Dockerfile
+!docker-compose.yml
 
 # Node modules (if any frontend dependencies)
 node_modules/

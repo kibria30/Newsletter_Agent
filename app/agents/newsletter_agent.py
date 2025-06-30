@@ -53,13 +53,14 @@ class NewsletterAgent:
     async def generate_search_queries(self, state: NewsletterState) -> NewsletterState:
         """Generate optimized search queries based on user interests"""
         interests = state["user_interests"]
-        
+        print(f"Generating search queries for interests in query generation: {interests}")
+
         # Create search queries for each interest
         queries = []
         for interest in interests:
             base_queries = [
                 f"{interest} latest news technology",
-                f"{interest} breakthrough innovation 2024",
+                f"{interest} breakthrough innovation 2025",
                 f"{interest} industry trends updates"
             ]
             queries.extend(base_queries)
@@ -67,7 +68,7 @@ class NewsletterAgent:
         # Use LLM to generate more sophisticated queries
         try:
             prompt = f"""
-            Generate 3 specific and effective search queries for finding the latest technology news 
+            Generate 3 specific and effective search queries for finding the latest(2025 in need to mention year) technology news 
             about these topics: {', '.join(interests)}
             
             Focus on:
@@ -80,16 +81,20 @@ class NewsletterAgent:
             
             response = await self.llm.ainvoke(prompt)
             llm_queries = response.content.strip().split('\n')
+            print(f"LLM response on query building: {response}")
             queries.extend([q.strip() for q in llm_queries if q.strip()])
-            
+            print(f"Generated queries including all: {queries}")
+
         except Exception as e:
             print(f"Error generating LLM queries: {e}")
         
         state["search_queries"] = queries[:10]  # Limit to 10 queries
+        print(f"Final search queries: {state['search_queries']}")
         return state
     
     async def collect_content(self, state: NewsletterState) -> NewsletterState:
         """Collect content using Tavily and web scraping"""
+        print(f"Collecting content for queries: {state['search_queries']}")
         try:
             # Search using Tavily
             articles = await content_service.search_content_tavily(

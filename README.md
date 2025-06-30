@@ -1,6 +1,16 @@
 # Newsletter AI Agent - Lightweight Version
 
-A simple, lightweight AI-powered newsletter generation system using FastAPI and Google Gemini.
+A simple, lightweight AI-powered newsletter generation system using **LangGraph** for workflow orchestration, **FastAPI** for the web framework, and **Google Gemini** for AI content generation.
+
+## Key Technologies
+
+- 🔗 **LangGraph** - Orchestrates the entire newsletter generation workflow
+- 🚀 **FastAPI** - High-performance web framework with async support
+- 🤖 **Google Gemini** - AI model for content generation and summarization
+- 🔍 **Tavily API** - Real-time content research and web scraping
+- 🍲 **BeautifulSoup** - HTML parsing and content formation
+- 📧 **SMTP** - Email delivery system
+- 💾 **SQLite** - Lightweight database for user management
 
 ## Quick Start
 
@@ -15,15 +25,15 @@ pip install -r requirements.txt
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-## Features
+## LangGraph Workflow
 
-- ✅ **User Registration** with interests
-- ✅ **AI Content Generation** using Google Gemini
-- ✅ **Content Research** via Tavily API
-- ✅ **Background Processing** with FastAPI BackgroundTasks
-- ✅ **Email Delivery** via SMTP
-- ✅ **SQLite Database** for simplicity
-- ✅ **Web Interface** for easy testing
+The newsletter generation follows a structured **LangGraph** workflow with the following nodes:
+
+1. **🔍 Generate Search Queries** - Creates optimized search queries based on user interests
+2. **📰 Collect Content** - Gathers articles using Tavily API and web scraping
+3. **⚙️ Process Content** - Filters, deduplicates, and ranks articles using vector similarity
+4. **✍️ Compose Newsletter** - Uses Gemini AI to create personalized newsletter content
+5. **📨 Send Email** - Delivers the final newsletter via SMTP
 
 ## API Usage
 
@@ -55,32 +65,8 @@ GEMINI_API_KEY=your_gemini_api_key
 TAVILY_API_KEY=your_tavily_api_key
 SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USERNAME=your_email@gmail.com
-SMTP_PASSWORD=your_password
+SMTP_USERNAME=some_email@gmail.com
+SMTP_PASSWORD=a_password
 ```
 
-## Architecture
-
-```
-FastAPI App
-├── 📧 User Management (SQLAlchemy + SQLite)
-├── 🤖 AI Content Generation (Google Gemini)
-├── 🔍 Content Research (Tavily API)
-├── ⚡ Background Tasks (FastAPI BackgroundTasks)
-└── 📨 Email Delivery (SMTP)
-```
-
-## Project Structure
-
-```
-app/
-├── main.py              # FastAPI application
-├── models.py            # Database models
-├── database.py          # Database configuration
-├── agents/              # AI newsletter agent
-├── services/            # Content, email, vector services
-├── routers/             # API route handlers
-└── static/              # Web interface
-```
-
-That's it! Simple and lightweight. 🚀
+That's it! **LangGraph** + **Gemini** + **Tavily** + **FastAPI** = Powerful AI Newsletter Agent 🚀

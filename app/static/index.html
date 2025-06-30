@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter AI Agent</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .interests { display: flex; flex-wrap: wrap; gap: 10px; }
+        .interest-tag { background: #e9ecef; padding: 5px 10px; border: 1px solid #ddd; border-radius: 15px; cursor: pointer; }
+        .interest-tag.selected { background: #007bff; color: white; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 4px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🤖 Newsletter AI Agent</h1>
+    <p>Get personalized tech newsletters powered by AI!</p>
+
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <label>Select Your Interests:</label>
+            <div class="interests">
+                <div class="interest-tag" data-interest="AI">AI</div>
+                <div class="interest-tag" data-interest="IoT">IoT</div>
+                <div class="interest-tag" data-interest="EV">Electric Vehicles</div>
+                <div class="interest-tag" data-interest="Blockchain">Blockchain</div>
+                <div class="interest-tag" data-interest="ML">Machine Learning</div>
+                <div class="interest-tag" data-interest="Cloud">Cloud Computing</div>
+                <div class="interest-tag" data-interest="Cybersecurity">Cybersecurity</div>
+                <div class="interest-tag" data-interest="5G">5G Technology</div>
+            </div>
+        </div>
+
+        <button type="submit">Register & Generate Newsletter</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        let selectedInterests = [];
+
+        // Handle interest selection
+        document.querySelectorAll('.interest-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                const interest = this.dataset.interest;
+                
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                    selectedInterests = selectedInterests.filter(i => i !== interest);
+                } else {
+                    this.classList.add('selected');
+                    selectedInterests.push(interest);
+                }
+            });
+        });
+
+        // Handle form submission
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (selectedInterests.length === 0) {
+                resultDiv.innerHTML = '<div class="result error">Please select at least one interest.</div>';
+                return;
+            }
+
+            resultDiv.innerHTML = '<div class="result">Registering user and generating newsletter...</div>';
+
+            try {
+                // Register user
+                const registerResponse = await fetch('/users/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        interests: selectedInterests
+                    })
+                });
+
+                if (!registerResponse.ok) {
+                    const error = await registerResponse.json();
+                    throw new Error(error.detail || 'Registration failed');
+                }
+
+                const user = await registerResponse.json();
+
+                // Generate newsletter
+                const newsletterResponse = await fetch(`/users/generate-newsletter?user_id=${user.id}`, {
+                    method: 'POST'
+                });
+
+                if (!newsletterResponse.ok) {
+                    const error = await newsletterResponse.json();
+                    throw new Error(error.detail || 'Newsletter generation failed');
+                }
+
+                const result = await newsletterResponse.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        <h3>Success! 🎉</h3>
+                        <p>Account created and newsletter generated!</p>
+                        <p><strong>Status:</strong> ${result.status}</p>
+                        <p><strong>Articles Found:</strong> ${result.articles_found}</p>
+                        <p>Check your email for your personalized newsletter!</p>
+                    </div>
+                `;
+
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">Error: ${error.message}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
